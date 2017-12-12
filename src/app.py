@@ -7,23 +7,26 @@ from bson import json_util
 import json
 
 
-app = Flask(__name__)
-
 def get_db():
 	client = MongoClient('mongodb://localhost:27017')
 	print("Created client")
 	db = client.streets_db
-	print("Created streets_db")
-	db.test_streets.drop()
-	with open('utils/test_coords.json') as f:
-		data = json.load(f)
-	for i, street in enumerate(data):
-		db.test_streets.insert(street)
-		print("Saved item to database: ", i)
+	print("Connected to streets_db")
 
-		if i == 100:
-			break
+	return
 	
+	# with open('utils/coords.json') as f:
+	# 	data = json.load(f)
+	# for i, street in enumerate(data):
+	# 	db.test_streets.insert(street)
+	# 	print("Saved item to database: ", i)
+
+	# 	if i == 100:
+	# 		break
+	
+app = Flask(__name__)
+db = get_db()
+
 		
 	# os.environ['TODO_DB_1_PORT_27017_TCP_ADDR']
 
@@ -39,5 +42,4 @@ def addelevs(start=0):
 	gmap_api
 
 if __name__ == "__main__":
-	db = get_db()
-	# app.run(host='0.0.0.0', debug=True)
+	app.run(host='0.0.0.0', debug=True)
