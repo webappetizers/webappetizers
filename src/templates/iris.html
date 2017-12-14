@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{{ js_resources|indent(4)|safe }}
+    {{ css_resources|indent(4)|safe }}
+    {{ script|safe }}
+    
+</head>
+<body>
+<h1>Iris Histogram</h1>
+
+<form action="">
+<select name="feature_name">
+	{% for feature in feature_names %}
+		{% if feature == current_feature_name %}
+			<option selected value="{{ feature }}">{{ feature }}</option> 
+		{% else %} 
+			<option value="{{ feature }}">{{ feature }}</option> 
+		{% endif %}
+	{% endfor %}
+</select>
+<input type="submit">
+</form>
+
+
+{{ div|safe }}
+
+</body>
+</html>

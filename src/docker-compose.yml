@@ -1,0 +1,21 @@
+# docker run -it -d -v "$(pwd)"/data --name db mongo mongod
+# docker exec -it db bash
+
+version: '3'
+
+services:
+  elevation:
+  	build: .
+  	command: python -u app.py
+  	ports:
+  		- "5000:5000"
+  	volumes:
+  		- .:/bokehbikeapp
+
+db:
+	image: mongo:3.0.2
+  env_file: .env
+    ports:
+      - '27017:27017'
+  volumes:
+    - 'db:/data/db'

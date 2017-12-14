@@ -2,7 +2,7 @@ from bokeh.io import show, output_file, output_notebook
 from bokeh.plotting import figure
 from bokeh.io import show, output_file, output_notebook
 from bokeh.models import(GMapPlot, GMapOptions, ColumnDataSource,
-                        Circle, Line, DataRange1d, PanTool, WheelZoomTool, BoxSelectTool, )
+                        Circle, Line, Range1d, PanTool, WheelZoomTool, BoxSelectTool, )
 from bokeh.models import ColorBar, LinearColorMapper
 from bokeh.palettes import Viridis3, Viridis256
 from bokeh.models.glyphs import MultiLine
@@ -19,15 +19,15 @@ from utils.YOUR_API_KEY import key
 #                          map_type='roadmap', zoom=14)
 # 	return options
 
-def plot(title="Test"):
+def plot():
 	options = GMapOptions(lat=29.936, lng=-98.208,
                          map_type='roadmap', zoom=14)
 	plot = figure(title='Austin Test')
-	plot = GMapPlot(x_range=DataRange1d(),
-	                y_range=DataRange1d(),
+	plot = GMapPlot(x_range=Range1d(),
+	                y_range=Range1d(),
 	                map_options=options,
 	                api_key=key)
-	plot.title.text = title
+	# plot.title.text = title
 	#plot.api_key=key
 	plot.add_tools(PanTool(), WheelZoomTool(), BoxSelectTool())
 
@@ -60,5 +60,5 @@ def plot(title="Test"):
 	line = MultiLine(xs="x",ys="y", line_color = {'field': 'elev', 'transform': mapper}, line_width=2.5)
 	plot.add_glyph(source, line)
 	print('Glyphs added')
-
+	print(plot)
 	return plot

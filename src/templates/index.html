@@ -1,17 +1,34 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
   <head>
+    <meta charset='utf-8' />
+    <meta http-equiv='content-type' content='text/html; charset=utf-8' />
+
     <title>Bar charts with Bokeh!</title>
-    <link href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.10.min.css" rel="stylesheet" type="text/css">
-    <link href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.10.min.css" rel="stylesheet" type="text/css">
-    <link href="http://cdn.pydata.org/bokeh/release/bokeh-tables-0.12.10.min.css" rel="stylesheet" type="text/css">
+    <link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.13.min.css"
+    rel="stylesheet" type="text/css">
+    <link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.13.min.css"
+    rel="stylesheet" type="text/css">
+    <link
+    href="http://cdn.pydata.org/bokeh/release/bokeh-tables-0.12.13.min.css"
+    rel="stylesheet" type="text/css">
+
+    <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.13.min.js"></script>
+    <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.13.min.js"></script>
+    <script src="http://cdn.pydata.org/bokeh/release/bokeh-tables-0.12.13.min.js"></script>
+
+<!--     {{ js_resources|indent(4)|safe }}
+    {{ css_resources|indent(4)|safe }} -->
+    {{ the_script|indent(4)|safe }}
+
   </head>
+
   <body>
     <h1>Hello Kyle</h1>
-    {{ the_div|safe }}
-    <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.10.min.js"></script>
-    <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.10.min.js"></script>
-    <script src="http://cdn.pydata.org/bokeh/release/bokeh-tables-0.12.10.min.js"></script>
-    {{ the_script|safe }}
+    <!-- {{ the_script|safe }} -->
+    {{ the_div|indent(4)|safe }}
   </body>
+
 </html>

@@ -1,9 +1,14 @@
+#local
+*.json
+*.geojson
+*.data
+coords
+YOUR_API_KEY.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-*.json
-*.geojson
 
 # C extensions
 *.so
