@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset='utf-8' />
@@ -19,16 +19,20 @@
     <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.13.min.js"></script>
     <script src="http://cdn.pydata.org/bokeh/release/bokeh-tables-0.12.13.min.js"></script>
 
-<!--     {{ js_resources|indent(4)|safe }}
-    {{ css_resources|indent(4)|safe }} -->
-    {{ the_script|indent(4)|safe }}
+<!--     <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.13.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.13.min.css"> -->
+<!--     {{ css_resources|safe }}
+    {{ js_resources|safe }} -->
+    {{ the_script|safe }}
 
   </head>
 
   <body>
-    <h1>Hello Kyle</h1>
+    <h1>{{ title }} Chart</h1>
     <!-- {{ the_script|safe }} -->
-    {{ the_div|indent(4)|safe }}
+    {{ the_div|safe }}
+
+    <p>end</p>
   </body>
 
 </html>

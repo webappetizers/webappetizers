@@ -6,8 +6,7 @@ from bokeh.plotting import figure
 
 
 def get_df():
-	iris_df = pd.read_csv("data/iris.data", 
-		names=["Sepal Length", "Sepal Width", "Petal Length", "Petal Width", "Species"])
+	iris_df = pd.read_csv("src/data/iris.data", names=["Sepal Length", "Sepal Width", "Petal Length", "Petal Width", "Species"])
 	return iris_df
 
 def get_features(iris_df):
