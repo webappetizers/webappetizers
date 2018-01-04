@@ -10,6 +10,7 @@ import irisapp.irisplot as ip
 from bokeh.util.string import encode_utf8
 from bokeh.resources import INLINE
 import requests
+from statistics import mean
 
 
 @app.route('/test')
@@ -29,10 +30,27 @@ def test():
 
 @app.route('/')
 def myplot():
-	coords = db.streets.find({'elevations': {'$exists': 0}},{'_id': 0, 'coords': 1})
-	if not coords:
-		return re
-	p = plot(avglat,avglon)
+	coords = db.streets.find({'elevations.elev1': {'$exists': 1}, 'elevations.elev2': {'$exists': 1}},{'_id': 0})
+
+	lat1 = [x['coords']['lat1'] for x in coords]
+	lon1 = [x['coords']['lon1'] for x in coords]
+	lat2 = [x['coords']['lat2'] for x in coords]
+	lon2 = [x['coords']['lon2'] for x in coords]
+	elev1 = [x['elevs']['elev1'] for x in coords]
+	elev2 = [x['elevs']['elev2'] for x in coords]
+
+	print([x for x in coords])
+	print('lat1: ', lat1)
+	print('lon1: ', lon1)
+
+	centerlat = sum(lat1) / len(lat1)
+	centerlon = sum(lon1) / len(lon1)
+
+	lats = [(sum(x)/len(x),sum(y)/len(y)) for x,y in zip(lat1, lat2)]
+	lons = [(sum(x)/len(x),sum(y)/len(y)) for x,y in zip(lon1, lon2)]
+	elevs = [sum(x)/len(x) for x in zip(elev1, elev2)]
+
+	p = plot(lats,lons,elevs,centerlat,centerlon)
 	script, div = components(p)
 	js_resources = INLINE.render_js()
 	css_resources = INLINE.render_css()
@@ -82,11 +100,11 @@ def addelevs(quantity):
 		return elevation
 
 	def save_elev1(id, elev):
-		db.streets.update({'_id': id}, {'$set': {'elevations':{'elev1': elev}}})
+		db.streets.update({'_id': id}, {'$set': {'elevations.elev1': elev}})
 		return
 
 	def save_elev2(id, elev):
-		db.streets.update({'_id': id}, {'$set': {'elevations':{'elev2': elev}}})
+		db.streets.update({'_id': id}, {'$set': {'elevations.elev2': elev}})
 		return
 
 	# Get all the previously calculated elevation segments
