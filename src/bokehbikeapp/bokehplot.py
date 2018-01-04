@@ -44,18 +44,11 @@ def gmap(lat=30.29, lng=-97.73):
 	plot.add_tools(PanTool(), WheelZoomTool(), BoxSelectTool())
 	return plot
 
-def plot(avglat,avglon):
-	centerlat = sum(avglat)/len(avglat)
-	centerlon = sum(avglon)/len(avglon)
+def plot(lats,lons,elevs,centerlat,centerlon):
 
-	# Call data() for the elevations. Will use this later for lat,lon
-	elev = utils.gmap_api.get_elevations(avglat,avglon)
-	print('data[0] of lat: {}, lon: {}, elev: {}'.format(avglat[0],avglon[0],elev[0]))
-	print('Count of lat: {}, lon: {}, elev: {}'.format(len(avglat),len(avglon),len(elev)))
-	
 	# Color Mapper
-	low = math.floor(min(elev))
-	high = math.ceil(max(elev))
+	low = math.floor(min(elevs))
+	high = math.ceil(max(elevs))
 	print('low_elev: {}, high_elev: {}'.format(low,high))
 
 	# Initialize plot
@@ -68,21 +61,21 @@ def plot(avglat,avglon):
 	plot.add_layout(color_bar, 'right')
 
 	# MultiLine glyphs
-	# source = ColumnDataSource(
-	#     data=dict(
-	#         x=avglon,
-	#         y=avglat,
-	#         elev=elev,
-	#     )
-	# )
-
 	source = ColumnDataSource(
-    data=dict(
-        x=[30.29, 30.20, 30.29],
-        y=[-97.70, -97.74, -97.78],
-        elev=[1,50,100],
-    	)
+	    data=dict(
+	        x=lons,
+	        y=lats,
+	        elev=elevs,
+	    )
 	)
+
+	# source = ColumnDataSource(
+ #    data=dict(
+ #        x=[30.29, 30.20, 30.29],
+ #        y=[-97.70, -97.74, -97.78],
+ #        elev=[1,50,100],
+ #    	)
+	# )
 	print('Adding glyphs')
 	line = MultiLine(xs="x",ys="y", line_color = {'field': 'elev', 'transform': mapper}, line_width=2.5)
 	plot.add_glyph(source, line)
