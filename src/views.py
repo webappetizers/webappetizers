@@ -1,3 +1,4 @@
+from __future__ import division
 from app import app, db
 from flask import Flask, render_template
 from bokehbikeapp.bokehplot import plot, gmap
@@ -10,7 +11,7 @@ import irisapp.irisplot as ip
 from bokeh.util.string import encode_utf8
 from bokeh.resources import INLINE
 import requests
-from statistics import mean
+
 
 
 @app.route('/test')
@@ -31,25 +32,38 @@ def test():
 @app.route('/')
 def myplot():
 	coords = db.streets.find({'elevations.elev1': {'$exists': 1}, 'elevations.elev2': {'$exists': 1}},{'_id': 0})
+	
+	lat1,lon1,lat2,lon2,elev1,elev2 = [],[],[],[],[],[]
+	for x in coords:
+		lat1.append(x['coords']['lat1'])
+		lon1.append(x['coords']['lon1'])
+		lat2.append(x['coords']['lat2'])
+		lon2.append(x['coords']['lon2'])
+		elev1.append(x['elevations']['elev1'])
+		elev2.append(x['elevations']['elev2'])
 
-	lat1 = [x['coords']['lat1'] for x in coords]
-	lon1 = [x['coords']['lon1'] for x in coords]
-	lat2 = [x['coords']['lat2'] for x in coords]
-	lon2 = [x['coords']['lon2'] for x in coords]
-	elev1 = [x['elevs']['elev1'] for x in coords]
-	elev2 = [x['elevs']['elev2'] for x in coords]
+	# lat1 = [x['coords']['lat1'] for x in coords]
+	# lon1 = [x['coords']['lon1'] for x in coords]
+	# lat2 = [x['coords']['lat2'] for x in coords]
+	# lon2 = [x['coords']['lon2'] for x in coords]
+	# elev1 = [x['elevs']['elev1'] for x in coords]
+	# elev2 = [x['elevs']['elev2'] for x in coords]
 
-	print([x for x in coords])
-	print('lat1: ', lat1)
+	print('Coords: ',coords)
+	
 	print('lon1: ', lon1)
+	print('elev1: ', elev1)
+	print('elev2: ', elev2)
+	print('type(lat1): ', type(lat1))
 
 	centerlat = sum(lat1) / len(lat1)
 	centerlon = sum(lon1) / len(lon1)
 
-	lats = [(sum(x)/len(x),sum(y)/len(y)) for x,y in zip(lat1, lat2)]
-	lons = [(sum(x)/len(x),sum(y)/len(y)) for x,y in zip(lon1, lon2)]
-	elevs = [sum(x)/len(x) for x in zip(elev1, elev2)]
-
+	lats = [(x,y) for x,y in zip(lat1, lat2)]
+	lons = [(x,y) for x,y in zip(lon1, lon2)]
+	elevs = [(x+y)/2 for x,y in zip(elev1, elev2)]
+	print('lats: ', lats)
+	print('elevs: ', elevs)
 	p = plot(lats,lons,elevs,centerlat,centerlon)
 	script, div = components(p)
 	js_resources = INLINE.render_js()

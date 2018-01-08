@@ -14,7 +14,7 @@ import utils.get_data
 from utils.YOUR_API_KEY import key
 import os
 
-def gmap(lat=30.29, lng=-97.73):
+def gmap(lat=30.29, lng=-97.73, low=0, high=100):
 	options = GMapOptions(lat=lat, lng=lng, map_type='roadmap', zoom=12)
 	api_key = os.environ.get('GOOGLE_API_KEY')
 	plot = GMapPlot(x_range=Range1d(),
@@ -22,7 +22,7 @@ def gmap(lat=30.29, lng=-97.73):
 	                map_options=options,
 	                api_key = api_key)
 	
-	mapper = LinearColorMapper(palette=Viridis256, low=0, high=100)
+	mapper = LinearColorMapper(palette=Viridis256, low=low, high=high)
 	color_bar = ColorBar(color_mapper=mapper, location=(0, 0))
 	plot.add_layout(color_bar, 'right')
 
@@ -52,10 +52,17 @@ def plot(lats,lons,elevs,centerlat,centerlon):
 	print('low_elev: {}, high_elev: {}'.format(low,high))
 
 	# Initialize plot
-	plot = gmap(centerlon,	centerlat)
+	options = GMapOptions(lat=centerlat, lng=centerlon, map_type='roadmap', zoom=14)
+	api_key = os.environ.get('GOOGLE_API_KEY')
+	print(api_key)
+	plot = GMapPlot(x_range=Range1d(),
+	                y_range=Range1d(),
+	                map_options=options,
+	                api_key = api_key)
 	plot.title.text = 'Austin'
-	# plot.add_tools(PanTool(), WheelZoomTool(), BoxSelectTool())
-
+	plot.add_tools(PanTool(), WheelZoomTool(), BoxSelectTool())
+	
+	# plot = figure()
 	mapper = LinearColorMapper(palette=Viridis256, low=low, high=high)
 	color_bar = ColorBar(color_mapper=mapper, location=(0, 0))
 	plot.add_layout(color_bar, 'right')
@@ -69,13 +76,6 @@ def plot(lats,lons,elevs,centerlat,centerlon):
 	    )
 	)
 
-	# source = ColumnDataSource(
- #    data=dict(
- #        x=[30.29, 30.20, 30.29],
- #        y=[-97.70, -97.74, -97.78],
- #        elev=[1,50,100],
- #    	)
-	# )
 	print('Adding glyphs')
 	line = MultiLine(xs="x",ys="y", line_color = {'field': 'elev', 'transform': mapper}, line_width=2.5)
 	plot.add_glyph(source, line)
